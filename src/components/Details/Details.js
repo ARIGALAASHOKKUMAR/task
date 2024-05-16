@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RiFileDownloadLine } from "react-icons/ri";
 import { Step, Stepper, StepLabel, Typography } from "@material-ui/core";
 import GreenCheckIcon from "../Greencheck";
 import { MdKeyboardArrowLeft } from "react-icons/md";
-import html2pdf from "html2pdf.js";
+import { useReactToPrint } from "react-to-print";
+
 
 
 const Details = () => {
@@ -12,18 +13,15 @@ const Details = () => {
   const receivedData = location.state?.data;
   const navigate=useNavigate()
   const isMobileView = window.innerWidth <= 576;
-  const handleDownload = () => {
-    const element = document.getElementById("details-container");
-    if (!element) {
-      console.error("Element with id 'details-container' not found.");
-      return;
-    }
-    html2pdf()
-      .from(element)
-      .save();
-  };
+  let componentRef = useRef();
+    const handleprint = useReactToPrint({
+        content: () => componentRef.current,
+        documentTitle: "college-data",
+        // onAfterPrint:()=> alert('successfully printed')
+    });
+
   return (
-    <div>
+    <div ref={componentRef}>
       <p style={{textAlign:"center",width:"30%"}}>Home &gt;Market watch</p>
       <div
       style={{
@@ -66,7 +64,7 @@ const Details = () => {
             alignItems: "center",
           }}
         >
-          <RiFileDownloadLine style={{ width: "50px", height: "30px" }} onClick={handleDownload} />
+          <RiFileDownloadLine style={{ width: "50px", height: "30px",cursor:"pointer"}} onClick={handleprint} />
           <button
             style={{
               backgroundColor: "black",

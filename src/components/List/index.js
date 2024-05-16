@@ -67,6 +67,7 @@ const List = () => {
               <td>
                 {each.invest}
                 <br/>
+
                 <span>{each.qty}</span>
               </td>
             </tr>
